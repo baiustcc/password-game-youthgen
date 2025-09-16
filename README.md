@@ -1,12 +1,12 @@
-# Password Game Challenge 🎮
+# Password Game Challenge
 
 An interactive password game inspired by Neal.fun's Password Game, created by **BAIUST Computer Club** in collaboration with **TECHious**.
 
-## 🎁 Prize
+## Prize
 
 Complete all 27 rules to win **3 VIP tickets to the YouthGEN Event**!
 
-## 🚀 Features
+## Features
 
 - **Interactive Password Challenge**: 27 unique rules to complete sequentially
 - **Real-time Validation**: Instant feedback on rule compliance
@@ -16,7 +16,7 @@ Complete all 27 rules to win **3 VIP tickets to the YouthGEN Event**!
 - **Responsive Design**: Works on desktop and mobile devices
 - **Comic Theme**: Fun and engaging game design with animations
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: Next.js 15 with TypeScript
 - **Styling**: Tailwind CSS with custom game theme
@@ -25,7 +25,7 @@ Complete all 27 rules to win **3 VIP tickets to the YouthGEN Event**!
 - **Animations**: Framer Motion
 - **Icons**: Lucide React
 
-## 📋 Game Rules
+## Game Rules
 
 The game features 25 progressive rules based on the custom rules defined in `rules.md`:
 
@@ -41,11 +41,11 @@ The game features 25 progressive rules based on the custom rules defined in `rul
 10. Must include a periodic table element
 11. Must include current moon phase emoji
 12. Must include a leap year
-13. Must protect TanbirSayem (🥚)
+13. Must protect TanbirSayem
 14. Element atomic numbers must sum to 200
 15. All vowels must be bolded
 16. Password catches fire (put it out!)
-17. Must include strength emoji (🏋️‍♂️)
+17. Must include strength emoji
 18. Must include an affirmation
 19. TanbirSayem hatches and needs feeding (3 worms)
 20. Must include a YouTube URL
@@ -55,7 +55,7 @@ The game features 25 progressive rules based on the custom rules defined in `rul
 24. Must include password length
 25. Length must be prime
 
-## 🏃‍♂️ Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -67,8 +67,8 @@ The game features 25 progressive rules based on the custom rules defined in `rul
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
-   cd password-game
+   git clone https://github.com/baiustcc/password-game-youthgen.git
+   cd password-game-youthgen
    ```
 
 2. **Install dependencies**
@@ -90,7 +90,7 @@ The game features 25 progressive rules based on the custom rules defined in `rul
    ```
 
 5. **Open your browser**
-   Navigate to [http://localhost:10105](http://localhost:10105)
+   Navigate to [http://localhost:8080](http://localhost:8080)
 
 ### Environment Variables
 
@@ -98,7 +98,7 @@ The game features 25 progressive rules based on the custom rules defined in `rul
 - `MONGODB_URI`: MongoDB connection string (optional for development)
 - `NEXT_PUBLIC_APP_URL`: Application URL
 
-## 📖 Usage
+## Usage
 
 ### For Players
 
@@ -112,38 +112,7 @@ The game features 25 progressive rules based on the custom rules defined in `rul
 - Monitor real-time participation and completion rates
 - Export winner data for prize distribution
 
-## 🏗️ Project Structure
-
-```
-src/
-├── app/                    # Next.js App Router
-│   ├── admin/             # Admin portal
-│   ├── api/               # API routes
-│   └── page.tsx           # Main game page
-├── components/            # React components
-│   ├── GameCard.tsx       # Reusable card component
-│   ├── Header.tsx         # App header
-│   ├── PasswordGame.tsx   # Main game logic
-│   ├── PasswordInput.tsx  # Password input with styling
-│   ├── RuleDisplay.tsx    # Individual rule display
-│   └── UserForm.tsx       # User registration form
-├── lib/                   # Utilities and configurations
-│   ├── gameLogic.ts       # Game rules and validation
-│   ├── mongodb.ts         # Database connection
-│   └── models/            # Mongoose models
-├── types/                 # TypeScript type definitions
-└── styles/               # Global styles
-```
-
-## 🎨 Design Features
-
-- **Green Gaming Theme**: Consistent color scheme throughout
-- **Comic Fonts**: Fun, game-appropriate typography
-- **Smooth Animations**: Framer Motion powered interactions
-- **Responsive Layout**: Works on all device sizes
-- **Visual Feedback**: Clear rule status indicators
-
-## 🔧 Development
+## Development
 
 ### Running Tests
 
@@ -163,15 +132,15 @@ npm start
 - **Development**: Uses MongoDB Memory Server automatically
 - **Production**: Configure `MONGODB_URI` in environment variables
 
-## 🤝 Contributing
+## Contributing
 
 This project is developed by **BAIUST Computer Club** in collaboration with **TECHious**.
 
-## 📝 License
+## License
 
 Copyright © 2025 BAIUST Computer Club. All rights reserved.
 
-## 🎉 Credits
+## Credits
 
 - **Inspiration**: Neal.fun's Password Game
 - **Developed by**: BAIUST Computer Club
@@ -180,4 +149,4 @@ Copyright © 2025 BAIUST Computer Club. All rights reserved.
 
 ---
 
-**Good luck with the challenge! 🎮🏆**
+**Good luck with the challenge!**
