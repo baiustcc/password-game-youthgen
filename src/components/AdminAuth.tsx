@@ -54,9 +54,7 @@ export default function AdminAuth({ onAuthenticated }: AdminAuthProps) {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-bold text-green-400 mb-2 text-left">
-                  Username
-                </label>
+                <label className="block text-sm font-bold text-green-400 mb-2 text-left">Username</label>
                 <input
                   type="text"
                   value={username}
@@ -68,9 +66,7 @@ export default function AdminAuth({ onAuthenticated }: AdminAuthProps) {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-green-400 mb-2 text-left">
-                  Password
-                </label>
+                <label className="block text-sm font-bold text-green-400 mb-2 text-left">Password</label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -119,8 +115,6 @@ export default function AdminAuth({ onAuthenticated }: AdminAuthProps) {
                 )}
               </motion.button>
             </form>
-
-
           </motion.div>
         </GameCard>
       </div>
