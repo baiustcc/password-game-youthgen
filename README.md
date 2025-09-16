@@ -47,7 +47,7 @@ The game features 25 progressive rules based on the custom rules defined in `rul
 16. Password catches fire (put it out!)
 17. Must include strength emoji (🏋️‍♂️)
 18. Must include an affirmation
-19. TanbirSayem hatches and needs feeding
+19. TanbirSayem hatches and needs feeding (3 worms)
 20. Must include a YouTube URL
 21. Sacrifice two letters
 22. Must include hex color

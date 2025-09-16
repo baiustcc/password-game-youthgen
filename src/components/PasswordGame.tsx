@@ -35,9 +35,9 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
   const [mathAnswer, setMathAnswer] = useState("");
   const [mathError, setMathError] = useState(false);
   const [lastCompletedRulesCount, setLastCompletedRulesCount] = useState(0);
-  const [tanbirSayemDeathWarning, setTanbirSayemDeathWarning] = useState(false);
+  // Removed tanbirSayemDeathWarning - no longer needed without automatic consumption
   const gameCompletedRef = useRef(false);
-  const deathWarningTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  // Removed deathWarningTimeoutRef - no longer needed
   const fireIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const feedingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const fireAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -349,7 +349,7 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
     }
   }, [gameState.isOnFire, soundEnabled, mathProblem]);
 
-  // Handle TanbirSayem hatching and feeding (Rule 19)
+  // Handle TanbirSayem hatching (Rule 19) - Users add worms manually
   useEffect(() => {
     const rule19 = gameState.rules.find((r) => r.id === 19);
     if (rule19?.isActive && !gameState.tanbirSayemHatched) {
@@ -358,54 +358,15 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
         ...prev,
         tanbirSayemHatched: true,
         password: prev.password.replace("🥚", "🐤"),
-        wormCount: 3,
+        wormCount: 0, // Start with 0 worms, user adds manually
       }));
-
-      // Start feeding interval
-      feedingIntervalRef.current = setInterval(() => {
-        setGameState((prev) => {
-          const newWormCount = Math.max(0, prev.wormCount - 1);
-
-          if (newWormCount === 0) {
-            // TanbirSayem is about to die - show warning and give 15 seconds to feed him
-            setTanbirSayemDeathWarning(true);
-
-            // Set a timeout to actually kill TanbirSayem after 15 seconds
-            deathWarningTimeoutRef.current = setTimeout(() => {
-              setGameState((currentState) => {
-                // Only reset warning if still at 0 worms after the warning period
-                if (currentState.wormCount === 0) {
-                  setTanbirSayemDeathWarning(false);
-                  // Note: Password is NOT reset - user keeps their progress
-                }
-                return currentState;
-              });
-            }, 15000); // 15 seconds warning period
-
-            return { ...prev, wormCount: newWormCount };
-          }
-
-          // Remove one worm emoji from the password
-          let newPassword = prev.password;
-          if (newPassword.includes("🐛")) {
-            // Find and remove one worm emoji
-            const wormIndex = newPassword.indexOf("🐛");
-            newPassword = newPassword.slice(0, wormIndex) + newPassword.slice(wormIndex + 2); // Remove the worm emoji (2 chars)
-            console.log("Worm removed from password"); // Debug log
-          }
-
-          return { ...prev, wormCount: newWormCount, password: newPassword };
-        });
-      }, 30000); // Every 30 seconds
     }
 
     return () => {
       if (feedingIntervalRef.current) {
         clearInterval(feedingIntervalRef.current);
       }
-      if (deathWarningTimeoutRef.current) {
-        clearTimeout(deathWarningTimeoutRef.current);
-      }
+      // Removed deathWarningTimeoutRef cleanup - no longer needed
     };
   }, [gameState.rules]);
 
@@ -518,32 +479,8 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
     setMathError(false);
   };
 
-  const feedTanbirSayem = () => {
-    // Clear death warning if active
-    if (tanbirSayemDeathWarning) {
-      setTanbirSayemDeathWarning(false);
-      if (deathWarningTimeoutRef.current) {
-        clearTimeout(deathWarningTimeoutRef.current);
-        deathWarningTimeoutRef.current = null;
-      }
-    }
-
-    setGameState((prev) => {
-      // Calculate how many worms to add to reach exactly 3
-      const wormsToAdd = Math.max(0, 3 - prev.wormCount);
-      const newWormCount = prev.wormCount + wormsToAdd;
-
-      // Add the appropriate number of worm emojis
-      const wormEmojis = "🐛".repeat(wormsToAdd);
-      const newPassword = prev.password.includes("🐤") ? prev.password.replace("🐤", `${wormEmojis}🐤`) : prev.password;
-
-      return {
-        ...prev,
-        wormCount: newWormCount,
-        password: newPassword,
-      };
-    });
-  };
+  // No feeding function needed - users add worms manually
+  // const feedTanbirSayem = () => { ... } - REMOVED
 
   const activeRules = gameState.rules.filter((rule) => rule.isActive);
   const completedRules = activeRules.filter(
@@ -714,37 +651,40 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
           <div className="mt-6 space-y-3">
             {gameState.tanbirSayemHatched && (
               <motion.div
-                className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 rounded-lg ${
-                  tanbirSayemDeathWarning ? "bg-red-900/30 border border-red-500" : "bg-green-900/30 border border-green-500"
-                }`}
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 rounded-lg bg-green-900/30 border border-green-500"
                 animate={{ scale: [1, 1.05, 1] }}
-                transition={{ repeat: Infinity, duration: tanbirSayemDeathWarning ? 1 : 2 }}
+                transition={{ repeat: Infinity, duration: 2 }}
               >
                 <div className="flex items-center space-x-2 min-w-0">
-                  <Heart
-                    className={`w-5 h-5 flex-shrink-0 ${tanbirSayemDeathWarning ? "text-red-400" : "text-green-400"}`}
-                  />
-                  <span className={`break-words ${tanbirSayemDeathWarning ? "text-red-400 font-bold" : "text-green-400"}`}>
-                    {tanbirSayemDeathWarning
-                      ? `⚠️ URGENT: TanbirSayem is starving! Feed him now or he'll die in 15 seconds! Worms: ${gameState.wormCount}`
-                      : `TanbirSayem needs feeding! Worms: ${gameState.wormCount}`}
+                  <Heart className="w-5 h-5 flex-shrink-0 text-green-400" />
+                  <span className="break-words text-green-400">
+                    {(() => {
+                      const wormEmojisInPassword = (gameState.password.match(/🐛/g) || []).length;
+                      const wormsNeeded = Math.max(0, 3 - wormEmojisInPassword);
+                      if (wormEmojisInPassword >= 3) {
+                        return "TanbirSayem is well fed and happy! 🐤";
+                      }
+                      return `TanbirSayem needs ${wormsNeeded} more worm${
+                        wormsNeeded > 1 ? "s" : ""
+                      } in your password. (Currently: ${wormEmojisInPassword}/3)`;
+                    })()}
                   </span>
                 </div>
-                <button
-                  onClick={feedTanbirSayem}
-                  className={`px-3 py-1 text-white rounded text-sm flex-shrink-0 ${
-                    gameState.wormCount >= 3 && gameState.password.includes("🐛")
-                      ? "bg-gray-500 cursor-not-allowed"
-                      : tanbirSayemDeathWarning
-                      ? "bg-red-500 hover:bg-red-600 animate-pulse"
-                      : "bg-green-500 hover:bg-green-600"
-                  }`}
-                  disabled={gameState.wormCount >= 3 && gameState.password.includes("🐛")}
+                <div
+                  className={`px-3 py-1 text-white rounded text-sm flex-shrink-0 ${(() => {
+                    const wormEmojisInPassword = (gameState.password.match(/🐛/g) || []).length;
+                    return wormEmojisInPassword >= 3 ? "bg-green-600 text-center" : "bg-blue-600 text-center";
+                  })()}`}
                 >
-                  {gameState.wormCount >= 3 && gameState.password.includes("🐛")
-                    ? "Well Fed ✓"
-                    : `Feed ${"🐛".repeat(3 - gameState.wormCount)}`}
-                </button>
+                  {(() => {
+                    const wormEmojisInPassword = (gameState.password.match(/🐛/g) || []).length;
+                    const wormsNeeded = Math.max(0, 3 - wormEmojisInPassword);
+                    if (wormEmojisInPassword >= 3) {
+                      return "Well Fed ✓";
+                    }
+                    return `Need: ${"🐛".repeat(wormsNeeded)}`;
+                  })()}
+                </div>
               </motion.div>
             )}
 

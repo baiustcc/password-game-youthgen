@@ -16,7 +16,7 @@
 - Oh no! Your password is on fire. Quick, put it out! [starts burning the pw by replacing each letter from back with a fire emoji every second, if 🥚is replaced by fire, players need to start over.]
 - Your password is not strong enough. [have to add any form of 🏋️‍♂️emoji]
 - Your password must contain one of the following affirmations: (I am loved, I am worthy, I am enough)
-- TanbirSayem has hatched! [🥚to 🐤 emoji] Please don’t forget to feed him, he eats three 🐛 every minute.[players need to add 🐛 emojis right before 🐤, every 20s, one emoji will be deleted. If all emojis are gone, after 20s, TanbirSayem will die, and players need to start over.]
+- TanbirSayem has hatched! [🥚 to 🐤 emoji] You must add 3 🐛 emojis to your password to keep him happy.
 - Your password must include the URL of a X-minute YouTube video.
 - A sacrifice must be made. Pick two letters that you will no longer be able to use.
 - Your password must contain twice as many italic characters as bold.

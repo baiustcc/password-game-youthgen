@@ -735,16 +735,19 @@ export const createGameRules = (): GameRule[] => [
   },
   {
     id: 19,
-    text: "TanbirSayem has hatched! Please don't forget to feed him, he eats three 🐛 every 30 seconds.",
+    text: "TanbirSayem has hatched! You must add 3 🐛 emojis to your password to keep him happy.",
     isActive: false,
     validator: (password: string, gameState: GameState) => {
-      return password.includes("🐤") && gameState.wormCount >= 3;
+      if (!password.includes("🐤")) return false;
+      // Count actual worm emojis in password
+      const wormEmojisInPassword = (password.match(/🐛/g) || []).length;
+      return wormEmojisInPassword >= 3;
     },
-    errorMessage: "TanbirSayem (🐤) needs at least 3 worms (🐛) to stay alive!",
+    errorMessage: "You must manually add at least 3 worm emojis (🐛) to your password to keep TanbirSayem (🐤) happy!",
   },
   {
     id: 20,
-    text: "Your password must include the URL of a X-minute YouTube video.",
+    text: "Your password must include the URL of any YouTube video.",
     isActive: false,
     validator: (password: string) => {
       return /https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[a-zA-Z0-9_-]+/.test(password);
