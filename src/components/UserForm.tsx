@@ -10,7 +10,10 @@ import GameCard from "./GameCard";
 const schema = yup.object({
   name: yup.string().required("Name is required").min(2, "Name must be at least 2 characters"),
   level: yup.number().required("Level is required").min(1).max(4),
-  term: yup.string().required("Term is required").oneOf(["I", "II"] as const),
+  term: yup
+    .string()
+    .required("Term is required")
+    .oneOf(["I", "II"] as const),
   dept: yup.string().required("Department is required").min(2, "Department must be at least 2 characters"),
   email: yup.string().required("Email is required").email("Invalid email format"),
 });
