@@ -10,10 +10,12 @@ import GameCard from "./GameCard";
 const schema = yup.object({
   name: yup.string().required("Name is required").min(2, "Name must be at least 2 characters"),
   level: yup.number().required("Level is required").min(1).max(4),
-  term: yup.string().required("Term is required").oneOf(["I", "II"]),
+  term: yup.string().required("Term is required").oneOf(["I", "II"] as const),
   dept: yup.string().required("Department is required").min(2, "Department must be at least 2 characters"),
   email: yup.string().required("Email is required").email("Invalid email format"),
 });
+
+type FormData = yup.InferType<typeof schema>;
 
 interface UserFormProps {
   onSubmit: (data: Partial<UserSubmission>) => void;
@@ -25,9 +27,20 @@ export default function UserForm({ onSubmit, loading = false }: UserFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
+
+  const handleFormSubmit = (data: FormData) => {
+    const submissionData: Partial<UserSubmission> = {
+      name: data.name,
+      level: Number(data.level),
+      term: data.term as "I" | "II",
+      dept: data.dept,
+      email: data.email,
+    };
+    onSubmit(submissionData);
+  };
 
   return (
     <GameCard className="max-w-2xl mx-auto">
@@ -39,7 +52,7 @@ export default function UserForm({ onSubmit, loading = false }: UserFormProps) {
           Enter your information to start the challenge and win 3 VIP tickets to YouthGEN Event!
         </p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-bold text-green-400 mb-2">Full Name *</label>

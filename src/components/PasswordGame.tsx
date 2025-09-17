@@ -513,12 +513,12 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
         <GameCard className="text-center">
           <Trophy className="w-20 h-20 text-yellow-400 mx-auto mb-6" />
           <h2 className="text-4xl font-bold text-green-400 mb-4">🎉 Congratulations! 🎉</h2>
-          <p className="text-xl text-gray-300 mb-6">You've completed the Password Game Challenge!</p>
+          <p className="text-xl text-gray-300 mb-6">You&apos;ve completed the Password Game Challenge!</p>
           <div className="bg-slate-700 p-4 rounded-lg mb-6">
             <p className="text-lg font-bold text-green-400">Your Final Password:</p>
             <p className="font-mono text-lg break-all overflow-wrap-anywhere">{gameState.password}</p>
           </div>
-          <p className="text-lg text-yellow-400 mb-4">🎁 You've won 1 VIP tickets to the YouthGEN Event! 🎁</p>
+          <p className="text-lg text-yellow-400 mb-4">🎁 You&apos;ve won 1 VIP tickets to the YouthGEN Event! 🎁</p>
           <div className="bg-blue-900/30 border border-blue-500 rounded-lg p-4 mb-4">
             <p className="text-blue-400 font-bold mb-2">📞 Contact Information:</p>
             <p className="text-gray-300">
