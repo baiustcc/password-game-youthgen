@@ -88,6 +88,7 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
       // Create a serializable version of the state (without functions)
       const serializableState = {
         ...state,
+        isOnFire: false, // Don't persist fire state to avoid modal without math problem
         rule16FirePutOut, // Save the rule 16 fire flag
         rules: state.rules.map((rule) => ({
           id: rule.id,
@@ -155,6 +156,9 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
           ...parsed,
           userSubmission, // Always use current user submission
           rules: mergedRules,
+          // Ensure fire state is clean on reload
+          isOnFire: false,
+          password: parsed.password,
         };
 
         // Restore Rule 16 fire flag if it exists
@@ -177,6 +181,10 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
     const savedState = loadGameState();
     if (savedState) {
       setGameState(savedState);
+      // Clear any fire-related state when loading
+      setMathProblem(null);
+      setMathAnswer("");
+      setMathError(false);
     } else {
       // Activate first rule initially for new game
       setGameState((prev) => ({
@@ -371,9 +379,22 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
   }, [gameState.rules]);
 
   const handlePasswordChange = (newPassword: string) => {
-    // Check for forbidden letters
-    if (gameState.forbiddenLetters.some((letter) => newPassword.toLowerCase().includes(letter.toLowerCase()))) {
-      return; // Don't allow forbidden letters
+    // Check for forbidden letters - but allow changes that remove forbidden letters
+    if (gameState.forbiddenLetters.length > 0) {
+      const currentForbiddenCount = gameState.forbiddenLetters.reduce((count, letter) => {
+        const regex = new RegExp(letter, "gi");
+        return count + (gameState.password.match(regex) || []).length;
+      }, 0);
+
+      const newForbiddenCount = gameState.forbiddenLetters.reduce((count, letter) => {
+        const regex = new RegExp(letter, "gi");
+        return count + (newPassword.match(regex) || []).length;
+      }, 0);
+
+      // Only block if we're adding more forbidden letters (not removing or keeping same)
+      if (newForbiddenCount > currentForbiddenCount) {
+        return; // Don't allow adding more forbidden letters
+      }
     }
 
     setGameState((prev) => ({ ...prev, password: newPassword }));
