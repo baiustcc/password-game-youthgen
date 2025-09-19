@@ -1,261 +1,120 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
-import UserForm from "@/components/UserForm";
-import PasswordGame from "@/components/PasswordGame";
 import GameCard from "@/components/GameCard";
-import { UserSubmission } from "@/types";
 
 export default function Home() {
-  const [currentUser, setCurrentUser] = useState<UserSubmission | null>(null);
-  const [existingUser, setExistingUser] = useState<UserSubmission | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [showPlayAgainPrompt, setShowPlayAgainPrompt] = useState(false);
-  const [checkingLocalStorage, setCheckingLocalStorage] = useState(true);
-
-  // Check localStorage for existing user data on component mount
-  useEffect(() => {
-    const storedUserData = localStorage.getItem("passwordGameUser");
-    if (storedUserData) {
-      try {
-        const userData = JSON.parse(storedUserData);
-        setCurrentUser(userData);
-        setShowPlayAgainPrompt(false);
-        setExistingUser(null);
-      } catch (error) {
-        console.error("Error parsing stored user data:", error);
-        localStorage.removeItem("passwordGameUser");
-      }
-    }
-    setCheckingLocalStorage(false);
-  }, []);
-
-  const handleUserSubmit = async (userData: Partial<UserSubmission>) => {
-    setLoading(true);
-    try {
-      const response = await fetch("/api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        // Store user data in localStorage
-        localStorage.setItem("passwordGameUser", JSON.stringify(result.user));
-
-        setCurrentUser(result.user);
-        setShowPlayAgainPrompt(false);
-        setExistingUser(null);
-      } else if (response.status === 400 && result.error.includes("already exists")) {
-        // User already exists, fetch their data
-        const existingResponse = await fetch(`/api/users?email=${encodeURIComponent(userData.email!)}`);
-        const existingResult = await existingResponse.json();
-
-        if (existingResult.success && existingResult.users.length > 0) {
-          const user = existingResult.users[0];
-          setExistingUser(user);
-          setShowPlayAgainPrompt(true);
-        } else {
-          alert(result.error || "Failed to start the game");
-        }
-      } else {
-        alert(result.error || "Failed to start the game");
-      }
-    } catch (error) {
-      console.error("Error submitting user data:", error);
-      alert("Failed to start the game. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePlayAgain = () => {
-    if (existingUser) {
-      // Store user data in localStorage when playing again
-      localStorage.setItem("passwordGameUser", JSON.stringify(existingUser));
-
-      setCurrentUser(existingUser);
-      setShowPlayAgainPrompt(false);
-      setExistingUser(null);
-    }
-  };
-
-  const handleNewSubmission = () => {
-    setShowPlayAgainPrompt(false);
-    setExistingUser(null);
-  };
-
-  const handleGameComplete = async (finalPassword: string) => {
-    if (!currentUser) return;
-
-    try {
-      const response = await fetch(`/api/users/${currentUser.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ finalPassword }),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        // Update localStorage with completed game data
-        localStorage.setItem("passwordGameUser", JSON.stringify(result.user));
-
-        setCurrentUser(result.user);
-      } else {
-        console.error("Failed to save completion:", result.error);
-      }
-    } catch (error) {
-      console.error("Error saving game completion:", error);
-    }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("passwordGameUser");
-    setCurrentUser(null);
-    setExistingUser(null);
-    setShowPlayAgainPrompt(false);
-  };
-
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-green-900">
+    <main className="min-h-screen bg-white relative overflow-hidden">
+      {/* Enhanced paper texture background */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `radial-gradient(circle at 10% 20%, rgba(173, 216, 230, 0.04) 0%, transparent 40%),
+                    radial-gradient(circle at 90% 80%, rgba(240, 248, 255, 0.04) 0%, transparent 40%),
+                    radial-gradient(circle at 50% 10%, rgba(245, 245, 245, 0.04) 0%, transparent 40%)`,
+        }}
+      ></div>
       <Header />
 
-      {/* Logout button - only show when user is logged in */}
-      {currentUser && (
-        <div className="absolute top-4 right-4 z-50">
-          <motion.button
-            onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium shadow-lg"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            🚪 Logout
-          </motion.button>
-        </div>
-      )}
-
       <div className="container mx-auto px-4 py-8">
-        {checkingLocalStorage ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex items-center justify-center min-h-[60vh]"
-          >
-            <div className="text-center">
-              <div className="text-6xl mb-4 animate-spin">⚡</div>
-              <div className="text-xl text-white font-comic">Loading your game...</div>
-            </div>
-          </motion.div>
-        ) : showPlayAgainPrompt && existingUser ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-2xl mx-auto"
-          >
-            <GameCard>
-              <div className="text-center space-y-6">
-                <div className="text-6xl mb-4">🎮</div>
-                <h2 className="text-3xl font-bold text-green-400 font-comic">Welcome Back, {existingUser.name}!</h2>
-                <p className="text-gray-300 text-lg">We found an existing submission for your email.</p>
-
-                <div className="bg-slate-700 p-4 rounded-lg">
-                  <div className="text-sm text-gray-400 mb-2">Your Previous Result:</div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-white">
-                      Level {existingUser.level} • Term {existingUser.term} • {existingUser.dept}
-                    </span>
-                    <span
-                      className={`px-3 py-1 rounded-full text-sm font-bold ${
-                        existingUser.completed
-                          ? "bg-green-900/30 text-green-400 border border-green-500"
-                          : "bg-yellow-900/30 text-yellow-400 border border-yellow-500"
-                      }`}
-                    >
-                      {existingUser.completed ? "🏆 Completed" : "⏳ In Progress"}
-                    </span>
-                  </div>
-                  {existingUser.completed && existingUser.completedAt && (
-                    <div className="text-sm text-gray-400 mt-2">
-                      Completed: {new Date(existingUser.completedAt).toLocaleDateString()}
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-4">
-                  <p className="text-gray-300">
-                    Would you like to play again for better results or try a different approach?
-                  </p>
-
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <motion.button
-                      onClick={handlePlayAgain}
-                      className="game-button bg-green-500 hover:bg-green-600"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      🎯 Play Again
-                    </motion.button>
-
-                    <motion.button
-                      onClick={handleNewSubmission}
-                      className="px-6 py-3 bg-slate-600 hover:bg-slate-500 text-white font-bold rounded-lg transition-all duration-200"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      📝 Use Different Email
-                    </motion.button>
-                  </div>
-                </div>
-
-                <div className="text-sm text-gray-400">
-                  💡 <strong>Tip:</strong> Each attempt helps you learn the rules better!
-                </div>
-              </div>
-            </GameCard>
-          </motion.div>
-        ) : !currentUser ? (
-          <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <UserForm onSubmit={handleUserSubmit} loading={loading} />
-          </motion.div>
-        ) : (
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}>
-            <div className="mb-6 text-center">
-              <motion.h2
-                className="text-2xl font-bold text-green-400 mb-2"
-                animate={{
-                  scale: [1, 1.05, 1],
-                  color: ["#22c55e", "#16a34a", "#22c55e"],
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-2xl mx-auto"
+        >
+          <GameCard className="border-4 border-gray-800 relative text-center">
+            <div className="absolute inset-0" style={{ boxShadow: "8px 8px 0px 0px rgba(0, 0, 0, 0.15)" }}></div>
+            <div className="relative space-y-6 py-8">
+              {/* Lock Icon with Animation */}
+              <motion.div
+                className="text-7xl"
+                animate={{ 
+                  rotate: [0, -10, 10, -10, 10, 0],
+                  scale: [1, 1.1, 1]
                 }}
-                transition={{
-                  duration: 2,
+                transition={{ 
+                  duration: 3, 
                   repeat: Infinity,
-                  ease: "easeInOut",
+                  repeatType: "reverse"
                 }}
               >
-                Welcome, {currentUser.name}! 🎮
-              </motion.h2>
-              <p className="text-gray-300">
-                Level {currentUser.level} • Term {currentUser.term} • {currentUser.dept}
-              </p>
-            </div>
+                🔒
+              </motion.div>
 
-            <PasswordGame userSubmission={currentUser} onGameComplete={handleGameComplete} />
-          </motion.div>
-        )}
+              {/* Main Heading */}
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold text-gray-800 font-sketch">
+                  Game Temporarily Unavailable
+                </h2>
+                <p className="text-gray-600 font-handwritten text-lg">
+                  We&apos;ll be back soon with exciting updates!
+                </p>
+              </div>
+
+              {/* Message Box */}
+              <div className="bg-blue-50 p-6 rounded-none border-2 border-blue-800 mx-4"
+                   style={{ boxShadow: "4px 4px 0px 0px rgba(30, 64, 175, 0.1)" }}>
+                <p className="text-gray-700 font-handwritten text-lg">
+                  Thank you for your interest in the Password Game Challenge by BAIUST Computer Club!
+                </p>
+                <p className="text-gray-700 font-handwritten mt-3">
+                  We&apos;re currently making improvements to enhance your gaming experience. 
+                  The game will be available again soon for public access.
+                </p>
+              </div>
+
+              {/* Coming Soon Section */}
+              <div className="bg-yellow-50 p-6 rounded-none border-2 border-yellow-800 mx-4"
+                   style={{ boxShadow: "4px 4px 0px 0px rgba(161, 98, 7, 0.1)" }}>
+                <h3 className="text-xl font-bold text-gray-800 font-sketch mb-2">
+                  Coming Back Soon!
+                </h3>
+                <p className="text-gray-700 font-handwritten">
+                  Stay tuned for updates from BAIUST Computer Club.
+                </p>
+                <p className="text-gray-700 font-handwritten mt-2">
+                  Follow our social media for the latest announcements.
+                </p>
+              </div>
+
+              {/* Footer Tip */}
+              <div className="text-sm text-gray-600 font-handwritten px-4">
+                💡 <strong>Tip:</strong> Bookmark this page to easily return when we&apos;re back!
+              </div>
+            </div>
+          </GameCard>
+        </motion.div>
       </div>
 
-      {/* Background Animation */}
-      <div className="fixed inset-0 -z-10 overflow-hidden">{/* Animated background particles */}</div>
+      {/* Background decorative elements */}
+      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        {/* Floating decorative elements */}
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute text-gray-200 opacity-50"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              fontSize: `${Math.random() * 20 + 10}px`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              rotate: [0, 10, 0],
+            }}
+            transition={{
+              duration: 4 + Math.random() * 3,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          >
+            {['🔒', '🎮', '⚡', '⭐', '💡'][Math.floor(Math.random() * 5)]}
+          </motion.div>
+        ))}
+      </div>
     </main>
   );
 }

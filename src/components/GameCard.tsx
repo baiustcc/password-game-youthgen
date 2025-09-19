@@ -1,15 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ReactNode } from "react";
+import { ReactNode, CSSProperties } from "react";
 
 interface GameCardProps {
   children: ReactNode;
   className?: string;
   animate?: boolean;
+  style?: CSSProperties;
 }
 
-export default function GameCard({ children, className = "", animate = true }: GameCardProps) {
+export default function GameCard({ children, className = "", animate = true, style }: GameCardProps) {
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -24,7 +25,11 @@ export default function GameCard({ children, className = "", animate = true }: G
   };
 
   if (!animate) {
-    return <div className={`game-card ${className}`}>{children}</div>;
+    return (
+      <div className={`game-card ${className}`} style={style}>
+        {children}
+      </div>
+    );
   }
 
   return (
@@ -34,6 +39,7 @@ export default function GameCard({ children, className = "", animate = true }: G
       initial="hidden"
       animate="visible"
       whileHover="hover"
+      style={style}
     >
       {children}
     </motion.div>

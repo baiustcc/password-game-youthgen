@@ -531,23 +531,49 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <GameCard className="text-center">
-          <Trophy className="w-20 h-20 text-yellow-400 mx-auto mb-6" />
-          <h2 className="text-4xl font-bold text-green-400 mb-4">🎉 Congratulations! 🎉</h2>
-          <p className="text-xl text-gray-300 mb-6">You&apos;ve completed the Password Game Challenge!</p>
-          <div className="bg-slate-700 p-4 rounded-lg mb-6">
-            <p className="text-lg font-bold text-green-400">Your Final Password:</p>
-            <p className="font-mono text-lg break-all overflow-wrap-anywhere">{gameState.password}</p>
+        <GameCard
+          className="text-center border-4 border-gray-800"
+          style={{ boxShadow: "10px 10px 0px 0px rgba(0, 0, 0, 0.15)" }}
+        >
+          <Trophy className="w-20 h-20 text-yellow-600 mx-auto mb-6" />
+          <h2 className="text-4xl font-bold text-gray-800 mb-4 font-sketch" style={{ transform: "rotate(-0.5deg)" }}>
+            🎉 Congratulations! 🎉
+          </h2>
+          <p className="text-xl text-gray-700 mb-6 font-handwritten" style={{ transform: "rotate(0.2deg)" }}>
+            You&apos;ve completed the Password Game Challenge!
+          </p>
+          <div
+            className="bg-gray-100 p-4 rounded-none mb-6 border-2 border-gray-800"
+            style={{ boxShadow: "4px 4px 0px 0px rgba(0, 0, 0, 0.1)" }}
+          >
+            <p className="text-lg font-bold text-gray-800 font-sketch" style={{ transform: "rotate(-0.3deg)" }}>
+              Your Final Password:
+            </p>
+            <p
+              className="font-mono text-lg break-all overflow-wrap-anywhere text-gray-700 font-handwritten"
+              style={{ transform: "rotate(0.1deg)" }}
+            >
+              {gameState.password}
+            </p>
           </div>
-          <p className="text-lg text-yellow-400 mb-4">🎁 You&apos;ve won 1 VIP tickets to the YouthGEN Event! 🎁</p>
-          <div className="bg-blue-900/30 border border-blue-500 rounded-lg p-4 mb-4">
-            <p className="text-blue-400 font-bold mb-2">📞 Contact Information:</p>
-            <p className="text-gray-300">
-              Please contact the <strong className="text-blue-400">BAIUST Computer Club Committee</strong> to collect your
+          <p className="text-lg text-yellow-700 mb-4 font-sketch" style={{ transform: "rotate(-0.4deg)" }}>
+            🎁 You&apos;ve won 1 VIP tickets to the YouthGEN Event! 🎁
+          </p>
+          <div
+            className="bg-blue-50 border-2 border-blue-800 rounded-none p-4 mb-4"
+            style={{ boxShadow: "4px 4px 0px 0px rgba(59, 130, 246, 0.1)" }}
+          >
+            <p className="text-blue-800 font-bold mb-2 font-sketch" style={{ transform: "rotate(-0.2deg)" }}>
+              📞 Contact Information:
+            </p>
+            <p className="text-gray-700 font-handwritten" style={{ transform: "rotate(0.1deg)" }}>
+              Please contact the <strong className="text-blue-800">BAIUST Computer Club Committee</strong> to collect your
               VIP ticket!
             </p>
           </div>
-          <p className="text-gray-400">Congratulations from BAIUST Computer Club and TECHious!</p>
+          <p className="text-gray-600 font-handwritten" style={{ transform: "rotate(-0.1deg)" }}>
+            Congratulations from BAIUST Computer Club and TECHious!
+          </p>
         </GameCard>
       </motion.div>
     );
@@ -559,16 +585,21 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
       <AnimatePresence>
         {gameState.isOnFire && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-red-900/90 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-orange-100/95 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
             <motion.div
-              className={`bg-slate-800 border-4 border-red-500 rounded-2xl p-8 max-w-md mx-4 text-center shadow-2xl ${
+              className={`bg-white border-4 border-red-800 rounded-none p-8 max-w-md mx-4 text-center ${
                 mathError ? "animate-shake" : ""
               }`}
+              style={{
+                boxShadow: "8px 8px 0px 0px rgba(220, 38, 38, 0.3), inset 2px 2px 0px 0px rgba(255, 255, 255, 0.8)",
+                transform: "rotate(-1.5deg)",
+                borderStyle: "solid",
+              }}
               initial={{ scale: 0.8, y: 50 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.8, y: 50 }}
@@ -588,36 +619,60 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
               >
                 🔥
               </motion.div>
-              <h2 className="text-3xl font-bold text-red-400 mb-4">Password is on Fire!</h2>
-              <p className="text-gray-300 mb-6">Your password is burning! Solve this math problem to put out the fire:</p>
+              <h2 className="text-3xl font-bold text-red-800 mb-4 font-sketch" style={{ transform: "rotate(0.5deg)" }}>
+                Password is on Fire!
+              </h2>
+              <p className="text-gray-700 mb-6 font-handwritten text-lg" style={{ transform: "rotate(-0.3deg)" }}>
+                Your password is burning! Solve this math problem to put out the fire:
+              </p>
 
               {mathProblem && (
                 <div className="mb-6">
-                  <div className="text-2xl font-bold text-yellow-400 mb-4">{mathProblem.question} = ?</div>
+                  <div
+                    className="text-2xl font-bold text-orange-800 mb-4 font-handwritten"
+                    style={{ transform: "rotate(-0.8deg)" }}
+                  >
+                    {mathProblem.question} = ?
+                  </div>
                   <input
                     type="number"
                     value={mathAnswer}
                     onChange={(e) => setMathAnswer(e.target.value)}
-                    className={`w-32 px-4 py-2 text-center text-xl font-bold rounded-lg text-white focus:outline-none focus:ring-2 transition-colors ${
+                    className={`w-32 px-4 py-2 text-center text-xl font-bold rounded-none text-gray-800 focus:outline-none focus:ring-0 transition-colors border-2 font-handwritten ${
                       mathError
-                        ? "bg-red-700 border-2 border-red-500 focus:ring-red-400"
-                        : "bg-slate-700 border-2 border-blue-500 focus:ring-blue-400"
+                        ? "bg-red-100 border-red-700 focus:border-red-800"
+                        : "bg-white border-gray-800 focus:border-gray-900"
                     }`}
+                    style={{
+                      boxShadow: mathError ? "3px 3px 0px 0px rgba(220, 38, 38, 0.2)" : "3px 3px 0px 0px rgba(0, 0, 0, 0.1)",
+                      transform: "rotate(0.4deg)",
+                    }}
                     placeholder="?"
                     autoFocus
                   />
-                  {mathError && <p className="text-red-400 text-sm mt-2 font-bold">Wrong answer! Try again.</p>}
+                  {mathError && (
+                    <p className="text-red-700 text-sm mt-2 font-bold font-sketch" style={{ transform: "rotate(-0.2deg)" }}>
+                      Wrong answer! Try again.
+                    </p>
+                  )}
                 </div>
               )}
 
               <button
                 onClick={putOutFire}
                 disabled={!mathAnswer || !mathProblem}
-                className={`px-6 py-3 font-bold rounded-lg transition-colors transform hover:scale-105 ${
+                className={`px-6 py-3 font-bold rounded-none transition-colors transform hover:scale-105 border-2 font-sketch ${
                   mathAnswer && mathProblem
-                    ? "bg-blue-500 hover:bg-blue-600 text-white"
-                    : "bg-gray-500 text-gray-300 cursor-not-allowed"
+                    ? "bg-blue-100 hover:bg-blue-200 text-blue-800 border-blue-800"
+                    : "bg-gray-100 text-gray-500 cursor-not-allowed border-gray-400"
                 }`}
+                style={{
+                  boxShadow:
+                    mathAnswer && mathProblem
+                      ? "4px 4px 0px 0px rgba(59, 130, 246, 0.2)"
+                      : "2px 2px 0px 0px rgba(156, 163, 175, 0.2)",
+                  transform: "rotate(0.6deg)",
+                }}
               >
                 🧯 Put Out Fire
               </button>
@@ -630,16 +685,24 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
       <GameCard>
         <div className="mb-4">
           <div className="flex justify-between items-center mb-2">
-            <h3 className="text-lg font-bold text-green-400">Progress</h3>
+            <h3 className="text-lg font-bold text-gray-800 font-sketch" style={{ transform: "rotate(-0.3deg)" }}>
+              Progress
+            </h3>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-300">
+              <span className="text-sm text-gray-600 font-handwritten">
                 {completedRules} / {totalRules} rules completed
               </span>
               <button
                 onClick={() => setSoundEnabled(!soundEnabled)}
-                className={`flex items-center space-x-1 px-3 py-1 rounded text-sm transition-colors ${
-                  soundEnabled ? "bg-green-500 hover:bg-green-600 text-white" : "bg-gray-500 hover:bg-gray-600 text-white"
+                className={`flex items-center space-x-1 px-3 py-1 rounded-none text-sm transition-colors border-2 font-sketch ${
+                  soundEnabled
+                    ? "bg-green-100 hover:bg-green-200 text-green-800 border-green-800"
+                    : "bg-gray-100 hover:bg-gray-200 text-gray-800 border-gray-800"
                 }`}
+                style={{
+                  boxShadow: "2px 2px 0px 0px rgba(0, 0, 0, 0.1)",
+                  transform: "rotate(0.2deg)",
+                }}
                 title={soundEnabled ? "Disable Sound" : "Enable Sound"}
               >
                 {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
@@ -647,9 +710,9 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
               </button>
             </div>
           </div>
-          <div className="w-full bg-slate-700 rounded-full h-3">
+          <div className="w-full bg-gray-200 rounded-none h-3 border border-gray-400">
             <motion.div
-              className="bg-green-500 h-3 rounded-full"
+              className="bg-green-500 h-3 rounded-none border-r border-gray-400"
               initial={{ width: 0 }}
               animate={{ width: `${progressPercentage}%` }}
               transition={{ duration: 0.5 }}
@@ -672,13 +735,17 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
           <div className="mt-6 space-y-3">
             {gameState.tanbirSayemHatched && (
               <motion.div
-                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 rounded-lg bg-green-900/30 border border-green-500"
-                animate={{ scale: [1, 1.05, 1] }}
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 rounded-none bg-green-50 border-2 border-green-800"
+                style={{
+                  boxShadow: "3px 3px 0px 0px rgba(72, 187, 120, 0.2)",
+                  transform: "rotate(-0.1deg)",
+                }}
+                animate={{ scale: [1, 1.02, 1] }}
                 transition={{ repeat: Infinity, duration: 2 }}
               >
                 <div className="flex items-center space-x-2 min-w-0">
-                  <Heart className="w-5 h-5 flex-shrink-0 text-green-400" />
-                  <span className="break-words text-green-400">
+                  <Heart className="w-5 h-5 flex-shrink-0 text-green-700" />
+                  <span className="break-words text-green-800 font-handwritten" style={{ transform: "rotate(-0.2deg)" }}>
                     {(() => {
                       const wormEmojisInPassword = (gameState.password.match(/🐛/g) || []).length;
                       const wormsNeeded = Math.max(0, 3 - wormEmojisInPassword);
@@ -692,10 +759,14 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
                   </span>
                 </div>
                 <div
-                  className={`px-3 py-1 text-white rounded text-sm flex-shrink-0 ${(() => {
+                  className={`px-3 py-1 text-gray-800 rounded-none text-sm flex-shrink-0 border font-sketch ${(() => {
                     const wormEmojisInPassword = (gameState.password.match(/🐛/g) || []).length;
-                    return wormEmojisInPassword >= 3 ? "bg-green-600 text-center" : "bg-blue-600 text-center";
+                    return wormEmojisInPassword >= 3 ? "bg-green-200 border-green-800" : "bg-blue-200 border-blue-800";
                   })()}`}
+                  style={{
+                    boxShadow: "2px 2px 0px 0px rgba(0, 0, 0, 0.1)",
+                    transform: "rotate(0.3deg)",
+                  }}
                 >
                   {(() => {
                     const wormEmojisInPassword = (gameState.password.match(/🐛/g) || []).length;
@@ -710,8 +781,14 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
             )}
 
             {gameState.rules.find((r) => r.id === 21)?.isActive && (
-              <motion.div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 bg-purple-900/30 border border-purple-500 rounded-lg">
-                <span className="text-purple-400 break-words">
+              <motion.div
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 bg-purple-50 border-2 border-purple-800 rounded-none"
+                style={{
+                  boxShadow: "3px 3px 0px 0px rgba(171, 71, 188, 0.2)",
+                  transform: "rotate(0.1deg)",
+                }}
+              >
+                <span className="text-purple-800 break-words font-handwritten" style={{ transform: "rotate(-0.2deg)" }}>
                   {gameState.forbiddenLetters.length === 0
                     ? "Choose 2 letters to sacrifice"
                     : gameState.forbiddenLetters.length === 1
@@ -722,7 +799,11 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
                 </span>
                 <button
                   onClick={handleSacrificeLetters}
-                  className="px-3 py-1 bg-purple-500 hover:bg-purple-600 text-white rounded text-sm flex-shrink-0"
+                  className="px-3 py-1 bg-purple-200 hover:bg-purple-300 text-purple-800 rounded-none text-sm flex-shrink-0 border-2 border-purple-800 font-sketch"
+                  style={{
+                    boxShadow: "2px 2px 0px 0px rgba(171, 71, 188, 0.2)",
+                    transform: "rotate(0.4deg)",
+                  }}
                 >
                   {gameState.forbiddenLetters.length === 0
                     ? "Make Sacrifice"
@@ -739,7 +820,9 @@ export default function PasswordGame({ userSubmission, onGameComplete }: Passwor
       {/* Rules - Show latest first */}
       <div className="max-w-4xl mx-auto">
         <GameCard>
-          <h3 className="text-xl font-bold text-green-400 mb-4">Active Rules</h3>
+          <h3 className="text-xl font-bold text-gray-800 mb-4 font-sketch" style={{ transform: "rotate(-0.4deg)" }}>
+            Active Rules
+          </h3>
           <div className="space-y-3">
             <AnimatePresence>
               {[...activeRules]

@@ -3,14 +3,14 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Password Game Challenge - BAIUST Computer Club",
-  description: "Complete the password challenge and win 3 VIP tickets to YouthGEN Event! By BAIUST Computer Club × TECHious",
-  keywords: "password game, challenge, BAIUST, computer club, TECHious, YouthGEN",
+  description: "Complete the password challenge and test your skills! By BAIUST Computer Club",
+  keywords: "password game, challenge, BAIUST, computer club",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="font-comic">{children}</body>
+      <body className="font-sketch">{children}</body>
     </html>
   );
 }

@@ -37,85 +37,127 @@ export default function AdminAuth({ onAuthenticated }: AdminAuthProps) {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-green-900 flex items-center justify-center">
+    <main className="min-h-screen bg-white flex items-center justify-center relative overflow-hidden">
+      {/* Enhanced paper texture background */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `radial-gradient(circle at 15% 25%, rgba(173, 216, 230, 0.05) 0%, transparent 45%),
+                    radial-gradient(circle at 85% 75%, rgba(240, 248, 255, 0.05) 0%, transparent 45%),
+                    radial-gradient(circle at 50% 15%, rgba(245, 245, 245, 0.05) 0%, transparent 45%)`,
+        }}
+      ></div>
       <div className="container mx-auto px-4 py-8 max-w-md">
-        <GameCard>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <div className="mb-6">
-              <Lock className="w-16 h-16 text-green-400 mx-auto mb-4" />
-              <h1 className="text-3xl font-bold text-green-400 mb-2">🔒 Admin Portal</h1>
-              <p className="text-gray-300">Enter your credentials to access the admin panel</p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-bold text-green-400 mb-2 text-left">Username</label>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="w-full p-3 bg-slate-700 border-2 border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-200"
-                  placeholder="Enter admin username"
-                  required
-                />
+        <GameCard className="border-4 border-gray-800 relative" animate={false}>
+          <div className="absolute inset-0" style={{ boxShadow: "8px 8px 0px 0px rgba(0, 0, 0, 0.15)" }}></div>
+          <div className="relative">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-center"
+            >
+              <div className="mb-6">
+                <Lock className="w-16 h-16 text-gray-800 mx-auto mb-4" />
+                <h1 className="text-3xl font-bold text-gray-800 mb-2 font-sketch" style={{ transform: "rotate(-0.3deg)" }}>
+                  🔒 Admin Portal
+                </h1>
+                <p className="text-gray-700 font-handwritten" style={{ transform: "rotate(0.1deg)" }}>
+                  Enter your credentials to access the admin panel
+                </p>
               </div>
 
-              <div>
-                <label className="block text-sm font-bold text-green-400 mb-2 text-left">Password</label>
-                <div className="relative">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label
+                    className="block text-sm font-bold text-gray-800 mb-2 text-left font-sketch"
+                    style={{ transform: "rotate(-0.1deg)" }}
+                  >
+                    Username
+                  </label>
                   <input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full p-3 bg-slate-700 border-2 border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-200 pr-12"
-                    placeholder="Enter admin password"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="w-full p-3 bg-white border-2 border-gray-800 rounded-none text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-gray-900 transition-all duration-200"
+                    style={{
+                      boxShadow: "2px 2px 0px 0px rgba(0, 0, 0, 0.1)",
+                      transform: "rotate(-0.2deg)",
+                    }}
+                    placeholder="Enter admin username"
                     required
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
-                  >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
                 </div>
-              </div>
 
-              {error && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="bg-red-900/30 border border-red-500 rounded-lg p-3"
-                >
-                  <p className="text-red-400 text-sm">{error}</p>
-                </motion.div>
-              )}
-
-              <motion.button
-                type="submit"
-                disabled={loading}
-                className={`w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                whileHover={{ scale: loading ? 1 : 1.05 }}
-                whileTap={{ scale: loading ? 1 : 0.95 }}
-              >
-                {loading ? (
-                  <div className="flex items-center justify-center space-x-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    <span>Authenticating...</span>
+                <div>
+                  <label
+                    className="block text-sm font-bold text-gray-800 mb-2 text-left font-sketch"
+                    style={{ transform: "rotate(-0.1deg)" }}
+                  >
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full p-3 bg-white border-2 border-gray-800 rounded-none text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-gray-900 transition-all duration-200 pr-12"
+                      style={{
+                        boxShadow: "2px 2px 0px 0px rgba(0, 0, 0, 0.1)",
+                        transform: "rotate(-0.2deg)",
+                      }}
+                      placeholder="Enter admin password"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-gray-900 transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
                   </div>
-                ) : (
-                  "🔓 Access Admin Panel"
+                </div>
+
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="bg-red-50 border-2 border-red-800 rounded-none p-3"
+                    style={{
+                      boxShadow: "3px 3px 0px 0px rgba(220, 38, 38, 0.2)",
+                      transform: "rotate(-0.2deg)",
+                    }}
+                  >
+                    <p className="text-red-700 text-sm font-handwritten">{error}</p>
+                  </motion.div>
                 )}
-              </motion.button>
-            </form>
-          </motion.div>
+
+                <motion.button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold rounded-none border-2 border-gray-800 transition-all duration-200 ${
+                    loading ? "opacity-50 cursor-not-allowed" : ""
+                  } font-sketch`}
+                  whileHover={{ scale: loading ? 1 : 1.05 }}
+                  whileTap={{ scale: loading ? 1 : 0.95 }}
+                  style={{
+                    boxShadow: "4px 4px 0px 0px rgba(0, 0, 0, 0.2)",
+                    transform: "rotate(0.3deg)",
+                  }}
+                >
+                  {loading ? (
+                    <div className="flex items-center justify-center space-x-2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-800"></div>
+                      <span className="font-handwritten">Authenticating...</span>
+                    </div>
+                  ) : (
+                    "🔓 Access Admin Panel"
+                  )}
+                </motion.button>
+              </form>
+            </motion.div>
+          </div>
         </GameCard>
       </div>
     </main>
