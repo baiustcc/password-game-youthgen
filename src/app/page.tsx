@@ -19,7 +19,7 @@ export default function Home() {
       <Header />
 
       <div className="container mx-auto px-4 py-8">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -31,14 +31,14 @@ export default function Home() {
               {/* Lock Icon with Animation */}
               <motion.div
                 className="text-7xl"
-                animate={{ 
+                animate={{
                   rotate: [0, -10, 10, -10, 10, 0],
-                  scale: [1, 1.1, 1]
+                  scale: [1, 1.1, 1],
                 }}
-                transition={{ 
-                  duration: 3, 
+                transition={{
+                  duration: 3,
                   repeat: Infinity,
-                  repeatType: "reverse"
+                  repeatType: "reverse",
                 }}
               >
                 🔒
@@ -46,38 +46,32 @@ export default function Home() {
 
               {/* Main Heading */}
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold text-gray-800 font-sketch">
-                  Game Temporarily Unavailable
-                </h2>
-                <p className="text-gray-600 font-handwritten text-lg">
-                  We&apos;ll be back soon with exciting updates!
-                </p>
+                <h2 className="text-3xl font-bold text-gray-800 font-sketch">Game Temporarily Unavailable</h2>
+                <p className="text-gray-600 font-handwritten text-lg">We&apos;ll be back soon with exciting updates!</p>
               </div>
 
               {/* Message Box */}
-              <div className="bg-blue-50 p-6 rounded-none border-2 border-blue-800 mx-4"
-                   style={{ boxShadow: "4px 4px 0px 0px rgba(30, 64, 175, 0.1)" }}>
+              <div
+                className="bg-blue-50 p-6 rounded-none border-2 border-blue-800 mx-4"
+                style={{ boxShadow: "4px 4px 0px 0px rgba(30, 64, 175, 0.1)" }}
+              >
                 <p className="text-gray-700 font-handwritten text-lg">
                   Thank you for your interest in the Password Game Challenge by BAIUST Computer Club!
                 </p>
                 <p className="text-gray-700 font-handwritten mt-3">
-                  We&apos;re currently making improvements to enhance your gaming experience. 
-                  The game will be available again soon for public access.
+                  We&apos;re currently making improvements to enhance your gaming experience. The game will be available
+                  again soon for public access.
                 </p>
               </div>
 
               {/* Coming Soon Section */}
-              <div className="bg-yellow-50 p-6 rounded-none border-2 border-yellow-800 mx-4"
-                   style={{ boxShadow: "4px 4px 0px 0px rgba(161, 98, 7, 0.1)" }}>
-                <h3 className="text-xl font-bold text-gray-800 font-sketch mb-2">
-                  Coming Back Soon!
-                </h3>
-                <p className="text-gray-700 font-handwritten">
-                  Stay tuned for updates from BAIUST Computer Club.
-                </p>
-                <p className="text-gray-700 font-handwritten mt-2">
-                  Follow our social media for the latest announcements.
-                </p>
+              <div
+                className="bg-yellow-50 p-6 rounded-none border-2 border-yellow-800 mx-4"
+                style={{ boxShadow: "4px 4px 0px 0px rgba(161, 98, 7, 0.1)" }}
+              >
+                <h3 className="text-xl font-bold text-gray-800 font-sketch mb-2">Coming Back Soon!</h3>
+                <p className="text-gray-700 font-handwritten">Stay tuned for updates from BAIUST Computer Club.</p>
+                <p className="text-gray-700 font-handwritten mt-2">Follow our social media for the latest announcements.</p>
               </div>
 
               {/* Footer Tip */}
@@ -111,7 +105,7 @@ export default function Home() {
               delay: Math.random() * 2,
             }}
           >
-            {['🔒', '🎮', '⚡', '⭐', '💡'][Math.floor(Math.random() * 5)]}
+            {["🔒", "🎮", "⚡", "⭐", "💡"][Math.floor(Math.random() * 5)]}
           </motion.div>
         ))}
       </div>
